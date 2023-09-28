@@ -1,12 +1,13 @@
-let grid = [];
-let GRID_SIZE = 60;
-let sizeOfSquare;
-let xCircle = 29;
-let yCircle = 29;
-let xSquare = 11;
-let ySquare = 11;
-let currentShape;
+let grid = []; // arreglo para la cuadricula
+let GRID_SIZE = 60; // tamaño de la cuadricula
+let sizeOfSquare; // tamaño de cada cuadro
+let xCircle = 29; // poscicion inicial en x del centro del circulo
+let yCircle = 29; // poscicion inicial en y del centro del circulo
+let xSquare = 11; // poscicion inicial en x del inicio del cuadrado
+let ySquare = 11; // poscicion inicial en y del inicio del cuadrado
+let currentShape; // Forma actual en el canva
 
+// Funcion para el rellenado de formas 
 function FloodFill(x, y, fillColor, borderColor) {
     let pixelColor = grid[x][y];
     if (pixelColor != fillColor && pixelColor != borderColor) {
@@ -20,6 +21,7 @@ function FloodFill(x, y, fillColor, borderColor) {
     }
 }
 
+// Funcion dibujar el circulo 
 function EightPoints(centroX, centroY, adicionX, adicionY) {
     grid[centroX + adicionX][centroY + adicionY] = "#000000";
     grid[centroX - adicionX][centroY + adicionY] = "#000000";
@@ -31,6 +33,7 @@ function EightPoints(centroX, centroY, adicionX, adicionY) {
     grid[centroX - adicionY][centroY - adicionX] = "#000000";
 }
 
+// Funcion para calcular los puntos del circulo
 function Circle(centroX, centroY, radio) {
     let p;
     let adicionX = 0;
@@ -49,6 +52,7 @@ function Circle(centroX, centroY, radio) {
     }
 }
 
+// Funcion para dibujar el cuadrado
 function Square(width, height, x, y) {
     //Dibujando el borde superior del cuadrado
     for (let i = x; i < x + width; i++) {
@@ -83,12 +87,14 @@ function setGrid(forma, xMovement = 0, yMovement = 0) {
         }
     }
 
-    xCircle += xMovement;
-    yCircle += yMovement;
+    // Aqui ocurre la traslacion
+    xCircle += xMovement; // traslada al circulo en x
+    yCircle += yMovement; // traslada al circulo en y
 
-    xSquare += xMovement;
-    ySquare += yMovement;
+    xSquare += xMovement; // traslada al cuadrado en x
+    ySquare += yMovement; // traslada al cuadrado en y
 
+    // Este switch determina que forma se dibujara en el canvas
     switch (forma) {
         case "circle":
             Circle(xCircle, yCircle, 20);
@@ -144,7 +150,7 @@ function setup() {
 
     // Funciones para los botones de la traslacion
     btnUp.onclick = () => {
-        setGrid(currentShape, 0, -1);
+        setGrid(currentShape, 0, -1); // Cuando presionamos el boton de direccion volvemos a crear la forma con la nueva posicion
     };
 
     btnDown.onclick = () => {
@@ -159,7 +165,7 @@ function setup() {
         setGrid(currentShape, -1, 0);
     };
     
-
+    // Event Listener que determina las coordenadas del mouse al hacer click y llama a la funcion floodfill
     canvas.addEventListener("click", (event) => {
         // Obtener las coordenadas del clic en el canvas
         let x = event.clientX - canvas.getBoundingClientRect().left;
