@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: 1.10em;
+}
+
+body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column-reverse;
+    margin: 5rem 0 0 0;
+    background-color: #403940;
+}
+
+button {
+    background-color: #A63D33;
+    border: none;
+    border-radius: 5px;
+    color: #FFFFFF;
+    font-family: 'Pixelify Sans', cursive;
+}
+
+.shape-btn-container button{
+    padding: 0.5rem 1rem;
+    margin: 0 0.5rem 0 0;
+}
+
+.direction-btn-container button{
+    padding: 0.5rem 1rem;
+    margin: 0 0.5rem 0 0;
+}
+
+.direction-btn-container{
+    margin: 0.5rem 0 0.5rem 0;
+}
+
+#defaultCanvas0 {
+    border: solid #A63D33 10px;
+}

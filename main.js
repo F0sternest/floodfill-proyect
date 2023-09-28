@@ -1,12 +1,17 @@
 let grid = [];
-let GRID_SIZE = 100;
+let GRID_SIZE = 60;
 let sizeOfSquare;
+let xCircle = 29;
+let yCircle = 29;
+let xSquare = 11;
+let ySquare = 11;
+let currentShape;
 
 function FloodFill(x, y, fillColor, borderColor) {
     let pixelColor = grid[x][y];
     if (pixelColor != fillColor && pixelColor != borderColor) {
         grid[x][y] = fillColor;
-        setTimeout(() => {
+        setTimeout(() => { 
             FloodFill(x + 1, y, fillColor, borderColor);
             FloodFill(x - 1, y, fillColor, borderColor);
             FloodFill(x, y + 1, fillColor, borderColor);
@@ -47,28 +52,28 @@ function Circle(centroX, centroY, radio) {
 function Square(width, height, x, y) {
     //Dibujando el borde superior del cuadrado
     for (let i = x; i < x + width; i++) {
-        grid[i][y] = '#000000'
+        grid[i][y] = "#000000";
     }
 
     //Dibujando el borde inferior del cuadrado
     for (let i = x; i < x + width; i++) {
-        grid[i][y+height] = '#000000'
+        grid[i][y + height] = "#000000";
     }
 
     //Dibujando el borde izquierdo del cuadrado
     for (let j = y; j < y + height; j++) {
-        grid[x][j] = '#000000'
+        grid[x][j] = "#000000";
     }
 
     //Dibujando el borde derecho del cuadrado
     for (let j = y; j <= y + height; j++) {
-        grid[x + width][j] = '#000000'
+        grid[x + width][j] = "#000000";
     }
 }
 
 // Esta funcion crea un array grid donde cada posicion es un sub-array
 // Y estos sub-arrays contienen en sus posiciones el color en hex de cada cuadro
-function setGrid(forma) {
+function setGrid(forma, xMovement = 0, yMovement = 0) {
     for (let i = 0; i < GRID_SIZE; i++) {
         grid[i] = []; //Esta linea asigna un array vacio para cada fila del array grid
         for (let j = 0; j < GRID_SIZE; j++) {
@@ -78,12 +83,18 @@ function setGrid(forma) {
         }
     }
 
+    xCircle += xMovement;
+    yCircle += yMovement;
+
+    xSquare += xMovement;
+    ySquare += yMovement;
+
     switch (forma) {
         case "circle":
-            Circle(49, 49, 30);
+            Circle(xCircle, yCircle, 20);
             break;
         case "square":
-            Square(60, 60, 17, 17);
+            Square(35, 35, xSquare, ySquare);
             break;
         default:
             break;
@@ -99,21 +110,55 @@ function setup() {
     setGrid();
 
     let canvas = document.getElementById("defaultCanvas0");
+
+    // Botones para las formas
     let btnCirle = document.getElementById("circle");
     let btnSquare = document.getElementById("square");
     let btnReset = document.getElementById("reset");
 
+    // Funciones para los botones de las formas
     btnSquare.onclick = () => {
+        xSquare = 11
+        ySquare = 11
         setGrid("square"); //Esta funcion crea la cuadricula
+        currentShape = "square";
     };
 
     btnCirle.onclick = () => {
+        xCircle = 29
+        yCircle = 29
         setGrid("circle"); //Esta funcion crea la cuadricula
+        currentShape = "circle";
     };
 
     btnReset.onclick = () => {
         setGrid(); //Esta funcion crea la cuadricula
+        currentShape = "none";
     };
+
+    // Botones para la traslacion
+    let btnUp = document.getElementById("up");
+    let btnDown = document.getElementById("down");
+    let btnRight = document.getElementById("right");
+    let btnLeft = document.getElementById("left");
+
+    // Funciones para los botones de la traslacion
+    btnUp.onclick = () => {
+        setGrid(currentShape, 0, -1);
+    };
+
+    btnDown.onclick = () => {
+        setGrid(currentShape, 0, 1);
+    };
+
+    btnRight.onclick = () => {
+        setGrid(currentShape, 1, 0);
+    };
+
+    btnLeft.onclick = () => {
+        setGrid(currentShape, -1, 0);
+    };
+    
 
     canvas.addEventListener("click", (event) => {
         // Obtener las coordenadas del clic en el canvas
@@ -125,7 +170,7 @@ function setup() {
         let indiceFila = Math.floor(y / sizeOfSquare);
 
         // Llamamos a la funcion FloodFill para que el algoritmo empiece donde hicimos click
-        FloodFill(indiceFila, indiceColumna, "#0b5ee3", "#000000");
+        FloodFill(indiceFila, indiceColumna, "#F2BE5C", "#000000");
     });
 }
 
